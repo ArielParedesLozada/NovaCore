@@ -1,0 +1,53 @@
+import prisma from "../infrastructure/repository/prisma.ts";
+
+export class BlogModel {
+    static async findAll() {
+        return await prisma.blogs.findMany()
+    }
+    static async findById(id: number) {
+        return await prisma.blogs.findUnique({
+            where: { id }
+        })
+    }
+    static async create(data: {
+        title: string;
+        urls: string[];
+        description: string;
+        authors: string[];
+        tags: string[];
+        image: string;
+        imageDelete: string;
+    }) {
+        return prisma.blogs.create({
+            data
+        });
+    }
+    static async update(id: number, data: {
+        title?: string;
+        urls?: string[];
+        description?: string;
+        authors?: string[];
+        tags?: string[];
+        image?: string;
+        imageDelete?: string;
+    }
+    ) {
+        try {
+            return prisma.blogs.update({
+                where: { id },
+                data
+            });
+        } catch {
+            return null;
+        }
+    }
+    static async delete(id: number) {
+        try {
+            return prisma.blogs.delete({
+                where: { id }
+            })
+        } catch {
+            return null
+        }
+    }
+}
