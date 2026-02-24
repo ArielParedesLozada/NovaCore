@@ -1,0 +1,10 @@
+<h1>Blogs</h1>
+
+<div>
+    @for (blog of blogs; track blog.id) {
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.description }}</p>
+    <img [src]="blog.image" width="200">
+    <hr>
+    }
+</div>

@@ -29,16 +29,16 @@ export class BlogService {
         return blog;
     }
     static async createBlog(data: BlogCreateData & { imageBase64: string }) {
-        const upload = await ImageService.uploadImage(data.imageBase64)
-        const validated = BlogSchema.parse({ ...data, image: upload.url })
+        //const upload = await ImageService.uploadImage(data.imageBase64)
+        const validated = BlogSchema.parse({ ...data, image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29kZXxlbnwwfHwwfHx8MA%3D%3D" })
         return BlogModel.create({
             description: data.description,
             title: data.title,
             urls: data.urls,
             authors: data.authors,
             tags: data.tags,
-            imageDelete: upload.deleteUrl,
-            image: upload.url,
+            imageDelete: "upload.deleteUrl",
+            image: "upload.url",
         });
     }
     static async updateBlog(id: number, newData: BlogEditData & { imageBase64?: string }) {
@@ -46,22 +46,22 @@ export class BlogService {
         if (!existingBlog) {
             throw new Error("Blog not found");
         }
-        let imageUrl = existingBlog.image;
-        let imageDeleteUrl = existingBlog.imageDelete;
-        if (newData.imageBase64) {
-            const upload = await ImageService.uploadImage(newData.imageBase64);
-            imageUrl = upload.url;
-            imageDeleteUrl = upload.deleteUrl;
-            await ImageService.deleteImage(existingBlog.imageDelete);
-        }
+        // let imageUrl = existingBlog.image;
+        // let imageDeleteUrl = existingBlog.imageDelete;
+        // if (newData.imageBase64) {
+        //     const upload = await ImageService.uploadImage(newData.imageBase64);
+        //     imageUrl = upload.url;
+        //     imageDeleteUrl = upload.deleteUrl;
+        //     await ImageService.deleteImage(existingBlog.imageDelete);
+        // }
         const validated = BlogSchema.partial().parse({
             ...newData,
-            image: imageUrl,
+            image: "imageUrl",
         });
         const updated = await BlogModel.update(id, {
             ...validated,
-            image: imageUrl,
-            imageDelete: imageDeleteUrl,
+            image: "imageUrl",
+            imageDelete: "imageDeleteUrl",
         });
 
         return updated;
