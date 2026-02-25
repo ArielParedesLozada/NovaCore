@@ -1,7 +1,9 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components/card/card.component';
 import { TeamMember } from '../../shared/models/team-member.model';
+import Swiper from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 @Component({
   selector: 'app-nosotros',
@@ -11,7 +13,7 @@ import { TeamMember } from '../../shared/models/team-member.model';
   templateUrl: './nosotros.component.html',
   styleUrl: './nosotros.component.scss'
 })
-export class NosotrosComponent implements OnInit {
+export class NosotrosComponent implements OnInit, AfterViewInit {
   teamMembers: TeamMember[] = [
     {
       name: 'Johan Rodríguez',
@@ -58,56 +60,54 @@ export class NosotrosComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    // Inicialización si es necesario
+  }
+
+  ngAfterViewInit(): void {
     this.initTeamSwiper();
   }
 
   private initTeamSwiper(): void {
-    if (typeof window !== 'undefined') {
-      // Esperar a que Swiper esté disponible desde el CDN
-      const checkSwiper = () => {
-        if ((window as any).Swiper) {
-          new (window as any).Swiper('.teamSwiper', {
-            slidesPerView: 3,
-            slidesPerGroup: 3,
-            spaceBetween: 30,
-            loop: true,
-            grabCursor: true,
-            autoplay: {
-              delay: 5000,
-              disableOnInteraction: false
-            },
-            pagination: {
-              el: '.team-pagination',
-              clickable: true
-            },
-            navigation: {
-              nextEl: '.team-next',
-              prevEl: '.team-prev'
-            },
-            breakpoints: {
-              320: {
-                slidesPerView: 1,
-                slidesPerGroup: 1,
-                spaceBetween: 10
-              },
-              768: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-                spaceBetween: 20
-              },
-              1024: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                spaceBetween: 30
-              }
-            }
-          });
-        } else {
-          setTimeout(checkSwiper, 100);
+    Swiper.use([Navigation, Pagination, Autoplay]);
+    
+    new Swiper('.teamSwiper', {
+      modules: [Navigation, Pagination, Autoplay],
+      slidesPerView: 3,
+      slidesPerGroup: 3,
+      spaceBetween: 30,
+      loop: true,
+      grabCursor: true,
+      autoplay: {
+        delay: 2000,
+        disableOnInteraction: false
+      },
+      pagination: {
+        el: '.team-pagination',
+        clickable: true,
+        dynamicBullets: true
+      },
+      navigation: {
+        nextEl: '.team-next',
+        prevEl: '.team-prev'
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+          spaceBetween: 10
+        },
+        768: {
+          slidesPerView: 2,
+          slidesPerGroup: 2,
+          spaceBetween: 20
+        },
+        1024: {
+          slidesPerView: 3,
+          slidesPerGroup: 3,
+          spaceBetween: 30
         }
-      };
-      setTimeout(checkSwiper, 100);
-    }
+      }
+    });
   }
 }
 
