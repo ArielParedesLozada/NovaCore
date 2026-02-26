@@ -1,5 +1,23 @@
-<h1>Bienvenido a mi App 🚀</h1>
+<app-hero></app-hero>
 
-<a routerLink="/blogs">
-    Ir a la lista de blogs
-</a>
+@defer (on viewport) {
+<app-metrics></app-metrics>
+} @placeholder {
+<div style="min-height: 200px"></div>
+}
+
+@defer (on viewport) {
+<app-nosotros></app-nosotros>
+} @placeholder {
+<div style="min-height: 400px"></div>
+}
+
+@defer (on viewport) {
+<app-footer></app-footer>
+} @placeholder {
+<div style="min-height: 300px"></div>
+}
+
+@defer (on idle) {
+<app-whatsapp-button></app-whatsapp-button>
+}
