@@ -1,35 +1,23 @@
+// A) Fondo más elegante (noise + depth)
 .blog-section {
   position: relative;
   min-height: 100vh;
-  background: var(--dark);
   padding: 120px 4% 80px;
   color: var(--light);
   overflow-x: hidden;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(77, 53, 255, 0.18), transparent 55%),
+              radial-gradient(900px 520px at 85% 80%, rgba(168, 85, 247, 0.16), transparent 55%),
+              #070812;
 
+  /* sutil textura */
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(77, 53, 255, 0.3), transparent 70%);
-    filter: blur(80px);
-    animation: float1 15s ease-in-out infinite;
-    z-index: 0;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 10%;
-    right: 10%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 70%);
-    filter: blur(90px);
-    animation: float2 18s ease-in-out infinite;
-    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.18;
   }
 }
 
@@ -69,16 +57,43 @@
     }
   }
 
+  // E) Tipografía más "SaaS"
   .blog-subtitle {
     font-size: 1.25rem;
     line-height: 1.6;
-    color: var(--text-muted);
-    max-width: 700px;
+    color: rgba(255, 255, 255, 0.68);
+    max-width: 760px;
     margin: 0 auto;
   }
 }
 
+/* Modo claro: subtítulo visible (mismo color que el texto principal) */
+:host-context(body.light-theme) .blog-header .blog-subtitle {
+  color: #0f172a !important;
+}
+
 // —— Última publicación destacada (horizontal, tamaño contenido) ——
+// G) Animación sutil al entrar (sin librerías)
+.blog-featured-wrap,
+.blog-card {
+  animation: fadeUp 0.55s ease both;
+}
+
+.blog-card {
+  animation-delay: 0.05s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .blog-featured-wrap {
   margin-bottom: 2.5rem;
 }
@@ -92,24 +107,45 @@
   margin: 0 0 0.75rem 0;
 }
 
+// B) Gradient border real para featured y cards
+.blog-featured,
+.blog-card {
+  position: relative;
+  border: none;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.blog-featured::before,
+.blog-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(77, 53, 255, 0.65), rgba(168, 85, 247, 0.55), rgba(255, 255, 255, 0.12));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.35s ease;
+}
+
+.blog-featured:hover::before,
+.blog-card:hover::before {
+  opacity: 0.95;
+}
+
 .blog-featured {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   min-height: 220px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border-visible);
   border-radius: 16px;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(10px);
-  position: relative;
-  box-shadow: 0 0 0 1px var(--card-accent-ring);
-
-  &:hover {
-    border-color: rgba(77, 53, 255, 0.45);
-    box-shadow: 0 0 0 1px rgba(77, 53, 255, 0.25), 0 20px 40px rgba(77, 53, 255, 0.16);
-  }
 }
 
 .blog-featured-link {
@@ -117,6 +153,12 @@
   color: inherit;
   cursor: pointer;
   width: 100%;
+}
+
+// C) Overlays + badge en imágenes (Opción A: center + overlay fuerte)
+.blog-featured-image,
+.blog-image-container {
+  position: relative;
 }
 
 .blog-featured-image {
@@ -127,35 +169,61 @@
   background: rgba(77, 53, 255, 0.1);
 }
 
+.img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.65) 90%);
+  opacity: 0.65;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.blog-featured:hover .img-overlay,
+.blog-card:hover .img-overlay {
+  opacity: 0.45;
+}
+
+.badge-featured {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
 .blog-featured-img {
   width: 100%;
   height: 100%;
   min-height: 220px;
   object-fit: cover;
-  object-position: top center;
-  transition: transform 0.5s ease;
-}
-
-.blog-featured:hover .blog-featured-img {
-  transform: scale(1.04);
+  object-position: center;
+  transition: transform 0.6s ease, filter 0.6s ease;
 }
 
 .blog-featured-content {
   flex: 1;
-  padding: 1.5rem 1.75rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 1.35rem 1.6rem;
+  gap: 0.55rem;
   min-width: 0;
 }
 
 .blog-featured-title {
+  margin: 0;
   font-size: clamp(1.3rem, 2.6vw, 1.85rem);
   font-weight: 700;
   line-height: 1.22;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--light);
-  margin: 0 0 0.5rem 0;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -164,55 +232,74 @@
 }
 
 .blog-featured-description {
+  margin: 0;
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--text-muted);
-  margin: 0 0 0.6rem 0;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
-.blog-featured-authors {
-  font-size: 0.875rem;
-  color: var(--text-muted-2);
-  margin: 0 0 0.2rem 0;
+.blog-featured-meta {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  i {
-    color: var(--primary);
-    flex-shrink: 0;
-  }
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  color: var(--text-muted-2);
+  font-size: 0.85rem;
 }
 
-.blog-featured-date {
-  font-size: 0.8rem;
-  color: var(--text-muted-3);
-  margin-bottom: 0.6rem;
+.blog-featured-meta .meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.blog-featured-meta i {
+  color: var(--primary);
 }
 
 .blog-featured-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 0.75rem;
+  margin: 0.25rem 0 0.35rem;
+}
+
+// F) Tags más finas
+.blog-featured-tag,
+.blog-tags .tag-item {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .blog-featured-tag {
   padding: 0.28rem 0.7rem;
-  border: 1px solid rgba(77, 53, 255, 0.5);
   border-radius: 14px;
   font-size: 0.75rem;
   color: var(--light);
-  background: rgba(77, 53, 255, 0.1);
+}
+
+.blog-tags .tag-item:hover,
+.blog-featured-tag:hover {
+  border-color: rgba(77, 53, 255, 0.55);
+  background: rgba(77, 53, 255, 0.14);
+}
+
+// E) CTA más "SaaS" (subrayado gradiente)
+.blog-featured-cta,
+.blog-card-cta {
+  position: relative;
+  padding-bottom: 2px;
 }
 
 .blog-featured-cta {
+  margin-top: auto;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -227,12 +314,67 @@
   }
 }
 
+.blog-featured-cta::after,
+.blog-card-cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(77, 53, 255, 0.9), rgba(168, 85, 247, 0.9));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+  opacity: 0.9;
+}
+
+.blog-featured-link:hover .blog-featured-cta::after,
+.blog-card-link:hover .blog-card-cta::after {
+  transform: scaleX(1);
+}
+
 .blog-featured-link:hover .blog-featured-cta {
   color: var(--purple-bright);
 
   i {
     transform: translateX(4px);
   }
+}
+
+/* ✅ Featured: controlar altura y eliminar "aire" */
+.blog-featured {
+  min-height: unset !important;
+  height: 260px;
+}
+
+/* Imagen ocupa toda la altura del featured */
+.blog-featured-image {
+  height: 100%;
+}
+
+.blog-featured-img {
+  min-height: unset !important;
+  height: 100%;
+  object-position: center;
+}
+
+/* El contenido usa toda la altura y distribuye */
+.blog-featured-content {
+  height: 100%;
+  padding: 1.4rem 1.6rem;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+/* Opcional: compactar un poco y evitar sensación de vacío */
+.blog-featured-description {
+  -webkit-line-clamp: 2;
+}
+
+/* CTA siempre al fondo */
+.blog-featured-cta {
+  margin-top: 0 !important;
 }
 
 .blog-grid-title {
@@ -256,21 +398,29 @@
 }
 
 .blog-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border-visible);
   border-radius: 20px;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(10px);
-  position: relative;
   min-width: 0;
-  box-shadow: 0 0 0 1px var(--card-accent-ring);
+}
 
-  &:hover {
-    transform: translateY(-8px);
-    border-color: rgba(77, 53, 255, 0.45);
-    box-shadow: 0 0 0 1px rgba(77, 53, 255, 0.28), 0 20px 40px rgba(77, 53, 255, 0.2);
-  }
+// D) Hover más elegante (lift + glow + saturación)
+.blog-featured,
+.blog-card {
+  transform: translateY(0);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.blog-featured:hover,
+.blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 55px rgba(77, 53, 255, 0.18), 0 18px 55px rgba(0, 0, 0, 0.45);
+}
+
+.blog-featured:hover .blog-featured-img,
+.blog-card:hover .blog-image {
+  transform: scale(1.06);
+  filter: saturate(1.1) contrast(1.05);
 }
 
 .blog-card-link {
@@ -281,7 +431,6 @@
 }
 
 .blog-image-container {
-  position: relative;
   width: 100%;
   height: 250px;
   overflow: hidden;
@@ -292,11 +441,7 @@
     height: 100%;
     object-fit: cover;
     object-position: top center;
-    transition: transform 0.5s ease;
-  }
-
-  .blog-card:hover .blog-image {
-    transform: scale(1.05);
+    transition: transform 0.6s ease, filter 0.6s ease;
   }
 }
 
@@ -308,6 +453,7 @@
   .blog-title-card {
     font-size: 1.5rem;
     font-weight: 700;
+    letter-spacing: -0.03em;
     color: var(--light);
     margin: 0 0 1rem 0;
     overflow: hidden;
@@ -357,17 +503,10 @@
 
     .tag-item {
       padding: 0.4rem 1rem;
-      border: 1px solid rgba(77, 53, 255, 0.5);
       border-radius: 20px;
       font-size: 0.85rem;
       color: var(--light);
-      background: rgba(77, 53, 255, 0.1);
       transition: all 0.3s ease;
-
-      &:hover {
-        background: rgba(77, 53, 255, 0.2);
-        border-color: var(--primary);
-      }
     }
   }
 
@@ -401,28 +540,6 @@
   color: var(--text-muted);
   font-size: 1.1rem;
   margin-top: 2rem;
-}
-
-@keyframes float1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translate(30px, -30px) scale(1.1);
-    opacity: 0.5;
-  }
-}
-
-@keyframes float2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translate(-30px, 30px) scale(1.1);
-    opacity: 0.5;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -482,5 +599,17 @@
 
   .blog-content {
     padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-featured-wrap,
+  .blog-card {
+    animation: none;
+  }
+
+  .blog-featured,
+  .blog-card {
+    transition: none;
   }
 }

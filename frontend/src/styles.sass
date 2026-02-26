@@ -493,3 +493,72 @@ body
       background: #dc2626
       box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4)
 
+// —— Blog: modo claro (mismo sistema que home, en global para que body.light-theme aplique) ——
+body.light-theme
+  .blog-section
+    background: radial-gradient(1200px 600px at 20% 10%, rgba(77, 53, 255, 0.08), transparent 55%), radial-gradient(900px 520px at 85% 80%, rgba(168, 85, 247, 0.06), transparent 55%), var(--bg-color)
+    color: var(--text-color)
+
+  .blog-section::before
+    opacity: 0.08
+
+  .blog-header .blog-title .title-main
+    color: var(--text-color)
+
+  .blog-header .blog-subtitle
+    color: #0f172a !important
+
+  .blog-featured-label
+    color: var(--text-muted-3)
+
+  .blog-featured,
+  .blog-card
+    background: var(--card-bg)
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08)
+
+  .blog-featured:hover,
+  .blog-card:hover
+    box-shadow: 0 18px 55px rgba(77, 53, 255, 0.12), 0 18px 55px rgba(0, 0, 0, 0.1)
+
+  .blog-featured-image,
+  .blog-image-container
+    background: rgba(77, 53, 255, 0.06)
+
+  .img-overlay
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.4) 90%)
+    opacity: 0.5
+
+  .badge-featured
+    color: rgba(15, 23, 42, 0.9)
+    background: rgba(255, 255, 255, 0.85)
+    backdrop-filter: blur(10px)
+    border-color: rgba(15, 23, 42, 0.12)
+
+  .blog-featured-title,
+  .blog-content .blog-title-card
+    color: var(--text-color)
+
+  .blog-featured-description,
+  .blog-content .blog-description
+    color: var(--text-muted)
+
+  .blog-featured-meta
+    color: var(--text-muted-2)
+
+  .blog-grid-title
+    color: var(--text-muted-2)
+
+  .blog-featured-tag,
+  .blog-tags .tag-item
+    border-color: rgba(15, 23, 42, 0.12)
+    background: rgba(255, 255, 255, 0.6)
+    color: var(--text-color)
+
+  .blog-featured-tag:hover,
+  .blog-tags .tag-item:hover
+    border-color: rgba(77, 53, 255, 0.4)
+    background: rgba(77, 53, 255, 0.12)
+
+  .blog-empty
+    color: var(--text-muted)
+
