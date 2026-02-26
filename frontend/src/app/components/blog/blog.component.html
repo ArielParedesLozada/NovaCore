@@ -1,0 +1,40 @@
+<section class="blog-section" id="blog">
+  <div class="blog-container">
+    <div class="blog-header">
+      <h1 class="blog-title">
+        <span class="title-main">Nuestros</span>
+        <span class="title-highlight">Blog</span>
+      </h1>
+      <p class="blog-subtitle">
+        Artículos, noticias y reflexiones sobre tecnología y desarrollo de software.
+      </p>
+    </div>
+
+    <div class="blog-grid">
+      <div *ngFor="let blog of blogs()" class="blog-card">
+        <div class="blog-image-container">
+          <img [src]="blog.image" [alt]="blog.title" class="blog-image" />
+        </div>
+        <div class="blog-content">
+          <h3 class="blog-title-card">{{ blog.title }}</h3>
+          <p class="blog-description">{{ truncateDescription(blog.description, 120) }}</p>
+          @if (blog.authors && blog.authors.length) {
+            <p class="blog-authors">
+              <i class="fas fa-user-edit"></i>
+              {{ blog.authors.join(', ') }}
+            </p>
+          }
+          @if (blog.tags && blog.tags.length) {
+            <div class="blog-tags">
+              <span *ngFor="let tag of blog.tags" class="tag-item">{{ tag }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (blogs().length === 0) {
+      <p class="blog-empty">Aún no hay publicaciones.</p>
+    }
+  </div>
+</section>

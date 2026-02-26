@@ -3,14 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BlogHttpService } from '../../services/blog-http-service';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { HeaderComponent } from '../../components/header/header.component';
 import { CardComponent } from '../../components/card/card.component';
 import { Blog } from '../../interfaces/blog';
 
 @Component({
   selector: 'app-crear-publicacion',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, FooterComponent, CardComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    HeaderComponent,
+    CardComponent,
+  ],
   templateUrl: './crear-publicacion.html',
   styleUrl: './crear-publicacion.sass',
 })
@@ -37,7 +43,7 @@ export class CrearPublicacion implements OnInit {
 
   loadBlogs(): void {
     this.blogService.getBlogs().subscribe({
-      next: (data) => (this.blogs = data),
+      next: (data: Blog[]) => (this.blogs = data),
       error: () => (this.blogs = []),
     });
   }
@@ -118,8 +124,7 @@ export class CrearPublicacion implements OnInit {
       return;
     }
 
-    let imageBase64 = '';
-    imageBase64 = await new Promise<string>((resolve, reject) => {
+    const imageBase64 = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve((reader.result as string) || '');
       reader.onerror = reject;
@@ -148,9 +153,7 @@ export class CrearPublicacion implements OnInit {
         this.imageFile = null;
         this.imagePreview = null;
         this.loadBlogs();
-        setTimeout(() => {
-          this.closeModal();
-        }, 1200);
+        setTimeout(() => this.closeModal(), 1200);
       },
       error: (err: { error?: { message?: string }; message?: string }) => {
         this.loading = false;

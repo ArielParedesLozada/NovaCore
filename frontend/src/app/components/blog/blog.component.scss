@@ -1,0 +1,233 @@
+.blog-section {
+  position: relative;
+  min-height: 100vh;
+  background: var(--dark);
+  padding: 120px 4% 80px;
+  color: var(--light);
+  overflow-x: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(77, 53, 255, 0.3), transparent 70%);
+    filter: blur(80px);
+    animation: float1 15s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 70%);
+    filter: blur(90px);
+    animation: float2 18s ease-in-out infinite;
+    z-index: 0;
+  }
+}
+
+.blog-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.blog-header {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  .blog-title {
+    display: block;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+
+    .title-main {
+      display: block;
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      color: var(--light);
+      letter-spacing: -1px;
+    }
+
+    .title-highlight {
+      display: block;
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      margin-top: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--purple-bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+  }
+
+  .blog-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.blog-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(77, 53, 255, 0.5);
+    box-shadow: 0 20px 40px rgba(77, 53, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.blog-image-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background: rgba(77, 53, 255, 0.1);
+
+  .blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .blog-card:hover .blog-image {
+    transform: scale(1.05);
+  }
+}
+
+.blog-content {
+  padding: 2rem;
+
+  .blog-title-card {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+    margin: 0 0 1rem 0;
+  }
+
+  .blog-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 1rem 0;
+  }
+
+  .blog-authors {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      color: var(--primary);
+    }
+  }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .tag-item {
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(77, 53, 255, 0.5);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--light);
+      background: rgba(77, 53, 255, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(77, 53, 255, 0.2);
+        border-color: var(--primary);
+      }
+    }
+  }
+}
+
+.blog-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-30px, 30px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-section {
+    padding: 100px 4% 60px;
+  }
+
+  .blog-header {
+    margin-bottom: 3rem;
+  }
+
+  .blog-image-container {
+    height: 200px;
+  }
+
+  .blog-content {
+    padding: 1.5rem;
+  }
+}
