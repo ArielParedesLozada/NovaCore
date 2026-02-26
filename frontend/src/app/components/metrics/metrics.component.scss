@@ -1,8 +1,8 @@
 .metrics-section {
   position: relative;
   padding: 80px 8%;
-  background: var(--dark);
-  color: var(--light);
+  background: var(--bg-color);
+  color: var(--text-color);
   overflow: hidden;
 
   // Background glow to match hero/overall space theme
@@ -32,8 +32,8 @@
 }
 
 .metric-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 2.5rem 1.5rem;
   text-align: center;
@@ -51,12 +51,10 @@
     left: -100%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.05),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent);
     transform: skewX(-20deg);
     transition: all 0.5s;
   }
@@ -65,18 +63,19 @@
     transform: translateY(-10px);
     border-color: rgba(77, 53, 255, 0.5);
     box-shadow: 0 15px 30px rgba(77, 53, 255, 0.2),
-                inset 0 0 20px rgba(77, 53, 255, 0.1);
-                
+      inset 0 0 20px rgba(77, 53, 255, 0.1);
+
     &::before {
       left: 200%;
     }
 
     .icon-container {
       transform: scale(1.1);
+
       i {
-        color: var(--light);
-        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        fill: var(--light);
+        color: var(--text-color);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        fill: var(--text-color);
       }
     }
   }
@@ -109,7 +108,7 @@
     font-size: 3rem;
     font-weight: 800;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, var(--light), #a8b0c3);
+    background: linear-gradient(135deg, var(--text-color), var(--text-gradient-sec));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -118,7 +117,8 @@
 
   .metric-label {
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-color);
+    opacity: 0.7;
     margin: 0;
     font-weight: 500;
   }

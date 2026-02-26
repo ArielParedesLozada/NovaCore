@@ -27,7 +27,7 @@
 /* PRIMARY */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--purple-bright) 100%);
-  color: var(--light);
+  color: #ffffff;
   box-shadow: 0 10px 30px rgba(77, 53, 255, 0.3);
 }
 
@@ -61,5 +61,5 @@
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--primary);
-  color: var(--light);
+  color: #ffffff;
 }

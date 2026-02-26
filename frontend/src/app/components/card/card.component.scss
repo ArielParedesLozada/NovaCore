@@ -36,7 +36,7 @@
   height: 100%;
   z-index: 1;
 
-  // El degradado: va de transparente a oscuro
+  // El degradado adaptable
   &::after {
     content: '';
     position: absolute;
@@ -45,9 +45,9 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom,
-        rgba(26, 26, 26, 0.1) 30%,
-        rgba(26, 26, 26, 0.7) 60%,
-        rgba(26, 26, 26, 0.95) 100%);
+        var(--card-grad-start) 30%,
+        var(--card-grad-mid) 60%,
+        var(--card-grad-end) 100%);
   }
 }
 
@@ -66,15 +66,15 @@
   flex-direction: column;
   justify-content: flex-end;
   flex-grow: 1;
-  color: white;
+  color: var(--text-color);
 }
 
 .card-info h3 {
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  // Gradient text for title using var(--text-color)
-  background: linear-gradient(135deg, var(--text-color), #a8b0c3);
+  // Gradient text for title using var(--text-color) and secondary
+  background: linear-gradient(135deg, var(--text-color), var(--text-gradient-sec));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -83,7 +83,8 @@
 
 .card-authors {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-color);
+  opacity: 0.6;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -115,13 +116,15 @@
   ::ng-deep .btn {
     width: 100%;
     text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
     backdrop-filter: blur(5px);
 
     &:hover {
       background: linear-gradient(135deg, var(--primary), var(--purple-bright));
       border-color: transparent;
+      color: #ffffff;
       box-shadow: 0 5px 15px rgba(77, 53, 255, 0.4);
     }
   }
