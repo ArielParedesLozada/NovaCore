@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, ButtonComponent, NgOptimizedImage],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.scss'
+  styleUrl: './card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent {
   @Input() imageUrl?: string;
@@ -20,6 +21,7 @@ export class CardComponent {
   @Input() showButton: boolean = false;
   /** Autores (opcional; se muestra como "Por: A, B, C"). */
   @Input() authors: string[] = [];
+  @Input() priority: boolean = false;
 }
 
 

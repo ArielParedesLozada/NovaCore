@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, signal, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, signal, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../shared/services/navigation.service';
 import { ScrollService } from '../../shared/services/scroll.service';
@@ -7,9 +7,10 @@ import { ScrollService } from '../../shared/services/scroll.service';
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, NgOptimizedImage],
     templateUrl: './header.component.html',
-    styleUrl: './header.component.scss'
+    styleUrl: './header.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnDestroy {
     @ViewChild('navbar', { static: false }) navbar!: ElementRef;

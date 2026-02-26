@@ -6,11 +6,11 @@
   <div class="swiper-container-wrapper team-wrapper reveal">
     <div class="swiper teamSwiper">
       <div class="swiper-wrapper">
-        @for (member of teamMembers; track member.name) {
+        @for (member of teamMembers; track member.name; let i = $index) {
         <div class="swiper-slide">
           <app-card [imageUrl]="member.imageUrl" [imageAlt]="member.imageAlt" [title]="member.name"
             [description]="member.description" [buttonText]="'Ver más'" [buttonLink]="member.profileLink"
-            [showButton]="true">
+            [showButton]="true" [priority]="i === 0">
           </app-card>
         </div>
         }

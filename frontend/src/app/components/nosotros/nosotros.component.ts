@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components/card/card.component';
 import { TeamMember } from '../../shared/models/team-member.model';
@@ -11,7 +11,8 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
   imports: [CommonModule, CardComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './nosotros.component.html',
-  styleUrl: './nosotros.component.scss'
+  styleUrl: './nosotros.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NosotrosComponent implements OnInit, AfterViewInit {
   teamMembers: TeamMember[] = [
