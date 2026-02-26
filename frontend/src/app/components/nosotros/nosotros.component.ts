@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components/card/card.component';
 import { TeamMember } from '../../shared/models/team-member.model';
@@ -11,7 +11,8 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
   imports: [CommonModule, CardComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './nosotros.component.html',
-  styleUrl: './nosotros.component.scss'
+  styleUrl: './nosotros.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NosotrosComponent implements OnInit, AfterViewInit {
   teamMembers: TeamMember[] = [
@@ -69,16 +70,17 @@ export class NosotrosComponent implements OnInit, AfterViewInit {
 
   private initTeamSwiper(): void {
     Swiper.use([Navigation, Pagination, Autoplay]);
-    
+
     new Swiper('.teamSwiper', {
       modules: [Navigation, Pagination, Autoplay],
       slidesPerView: 3,
-      slidesPerGroup: 3,
+      slidesPerGroup: 1, // Advance 1 by 1 for fluidness instead of groups of 3
       spaceBetween: 30,
       loop: true,
       grabCursor: true,
+      speed: 800, // Smooth transition duration
       autoplay: {
-        delay: 2000,
+        delay: 3000,
         disableOnInteraction: false
       },
       pagination: {
@@ -98,12 +100,12 @@ export class NosotrosComponent implements OnInit, AfterViewInit {
         },
         768: {
           slidesPerView: 2,
-          slidesPerGroup: 2,
+          slidesPerGroup: 1,
           spaceBetween: 20
         },
         1024: {
           slidesPerView: 3,
-          slidesPerGroup: 3,
+          slidesPerGroup: 1,
           spaceBetween: 30
         }
       }

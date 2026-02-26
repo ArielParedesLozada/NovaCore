@@ -1,35 +1,42 @@
 .offer-card {
-  position: relative; // Necesario para posicionar elementos internos
-  background: #0f172a; // Fondo oscuro por si la imagen falla
-  border-radius: 24px;
+  position: relative;
+  background: var(--card-bg); // Glassmorphism background
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid #f1f5f9;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 1px solid var(--card-border);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
-  min-height: 450px; // Dale una altura mínima para que luzca la foto
+  min-height: 450px;
   width: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   &:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.3);
-    border-color: var(--primary);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(77, 53, 255, 0.2), inset 0 0 20px rgba(77, 53, 255, 0.1);
+    border-color: rgba(77, 53, 255, 0.5);
 
     .card-img {
-      transform: scale(1.05); // Efecto de zoom suave al hacer hover
+      transform: scale(1.05);
+    }
+
+    // Slight glow text effect on title on hover
+    .card-info h3 {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
     }
   }
 }
 
 .card-img-wrapper {
-  position: absolute; // Ocupa toda la card
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
 
-  // El degradado: va de transparente a negro sólido
+  // El degradado adaptable
   &::after {
     content: '';
     position: absolute;
@@ -37,12 +44,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      to bottom,
-      transparent 30%, // Empieza transparente
-      rgba(0, 0, 0, 0.5) 60%, // Se oscurece en el medio
-      rgba(0, 0, 0, 0.9) 100% // Negro casi total abajo
-    );
+    background: linear-gradient(to bottom,
+        var(--card-grad-start) 30%,
+        var(--card-grad-mid) 60%,
+        var(--card-grad-end) 100%);
   }
 }
 
@@ -54,43 +59,73 @@
 }
 
 .card-info {
-  position: relative; // Para quedar por encima de la imagen
+  position: relative;
   z-index: 2;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; // Empuja el texto hacia abajo
+  justify-content: flex-end;
   flex-grow: 1;
-  color: white; // Texto blanco para legibilidad
+  color: var(--text-color);
 }
 
-// Ajustes de colores para que resalten sobre el fondo oscuro
 .card-info h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #ffffff; 
+  font-size: 1.5rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  // Gradient text for title using var(--text-color) and secondary
+  background: linear-gradient(135deg, var(--text-color), var(--text-gradient-sec));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
 }
 
 .card-authors {
   font-size: 0.85rem;
-  color: #e2e8f0;
+  color: var(--text-color);
+  opacity: 0.6;
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .card-description {
-  color: #cbd5e1;
+  color: var(--text-color);
+  opacity: 0.8;
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  // Limitamos líneas para que no tape toda la foto si es muy larga
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .price-new {
-  background: var(--primary); // Color sólido o más vibrante
+  background: linear-gradient(135deg, var(--primary), var(--purple-bright));
   color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(77, 53, 255, 0.3);
+}
+
+.team-btn-wrapper {
+  margin-top: 1rem;
+
+  // Customizing the button inside the card slightly if needed to match width
+  ::ng-deep .btn {
+    width: 100%;
+    text-align: center;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    backdrop-filter: blur(5px);
+
+    &:hover {
+      background: linear-gradient(135deg, var(--primary), var(--purple-bright));
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 5px 15px rgba(77, 53, 255, 0.4);
+    }
+  }
 }

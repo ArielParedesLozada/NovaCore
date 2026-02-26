@@ -24,8 +24,8 @@ export class NavigationService {
   }
 
   private updateScrollState(): void {
-    // Solo marcar como scrolled cuando el usuario baja más allá del hero (100vh)
-    const isScrolled = window.scrollY > window.innerHeight * 0.8;
+    // Marcar como scrolled ni bien el usuario baja un poco (ej. 50px)
+    const isScrolled = window.scrollY > 50;
     this.isScrolledSignal.set(isScrolled);
   }
 
@@ -37,7 +37,7 @@ export class NavigationService {
   }
 
   toggleTheme(): void {
-    this.currentThemeSignal.update(current => 
+    this.currentThemeSignal.update(current =>
       current === 'theme-light' ? 'theme-dark' : 'theme-light'
     );
   }

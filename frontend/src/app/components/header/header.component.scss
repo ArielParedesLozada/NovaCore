@@ -1,46 +1,71 @@
 :host {
-  display: block;
-  position: absolute; // Esto asegura que el componente no "empuje" al Hero hacia abajo
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar {
-  position: fixed; // Se mantiene fijo al hacer scroll
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 90px;
-  background: transparent; // Transparente por defecto
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 4%;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease, height 0.4s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4%;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, height 0.4s ease, box-shadow 0.4s ease;
 
-  // Estilo cuando detecta fondo claro
-  &.text-dark {
-    .nav-links a, .logo-main, .menu-toggle span {
-      color: #000000;
-    }
-    &.scrolled {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(15px);
-    }
-  }
+    // --- DARK THEME BASE ESTILO ---
+    // En tema oscuro (por la clase text-light), el texto por defecto es blanco
+    &.text-light {
 
-  // Estilo cuando detecta fondo oscuro (como el Hero)
-  &.text-light {
-    .nav-links a, .logo-main, .menu-toggle span {
-      color: #ffffff;
+        .nav-links a,
+        .logo-main,
+        .menu-toggle span,
+        .theme-toggle-btn {
+            color: #ffffff;
+        }
+
+        &.scrolled {
+            height: 75px;
+            background: rgba(0, 0, 0, 0.5);
+            /* Más opaco que antes para mejor contraste inmediato */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
     }
-    &.scrolled {
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(15px);
+
+    // --- LIGHT THEME BASE ESTILO ---
+    // En tema claro (text-dark class), el texto por defecto es oscuro
+    &.text-dark {
+
+        .nav-links a,
+        .logo-main,
+        .menu-toggle span,
+        .theme-toggle-btn {
+            color: #0f172a; // Color texto oscuro para backgrounds claros
+        }
+
+        .logo-top {
+            color: var(--primary); // Color morado
+        }
+
+        &.scrolled {
+            height: 75px;
+            background: rgba(255, 255, 255, 0.75); // Fondo claro que no lastima el ojo
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
     }
-  }
 }
 
 .logo-container {
@@ -71,7 +96,6 @@
 }
 
 .logo-main {
-    color: var(--dark);
     font-size: 2.2rem;
     font-weight: 800;
     letter-spacing: -1.5px;
@@ -104,31 +128,21 @@
             width: 100%;
         }
     }
-}
 
-.text-light {
+    .theme-toggle-btn {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease, color 0.3s ease;
 
-    .nav-links a,
-    .logo-main,
-    .menu-toggle {
-        color: #ffffff !important;
-    }
-
-    &.scrolled {
-        background: rgba(0, 0, 0, 0.2);
-    }
-}
-
-.text-dark {
-
-    .nav-links a,
-    .logo-main,
-    .menu-toggle {
-        color: #000000 !important;
-    }
-
-    &.scrolled {
-        background: rgba(255, 255, 255, 0.7); // Difuminado claro si el fondo es claro
+        &:hover {
+            transform: scale(1.1) rotate(15deg);
+            color: var(--primary) !important;
+        }
     }
 }
 
@@ -162,37 +176,6 @@
     }
 }
 
-.theme-light {
-
-    .nav-links a,
-    .logo-main,
-    .menu-toggle {
-        color: white;
-    }
-}
-
-.theme-dark {
-
-    .nav-links a,
-    .logo-main,
-    .menu-toggle {
-        color: var(--dark);
-    }
-}
-
-.navbar.scrolled {
-    height: 75px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-
-    .nav-links a,
-    .logo-main {
-        color: var(--dark);
-    }
-}
-
 @media (max-width: 900px) {
     .menu-toggle {
         display: flex;
@@ -204,7 +187,7 @@
         left: 0;
         width: 100%;
         height: 100vh;
-        background: var(--dark);
+        background: var(--bg-color); // Adaptativo al sistema de temas de la navbar
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -217,12 +200,18 @@
         }
 
         a {
-            color: white !important;
+            color: var(--text-color) !important;
             font-size: 1.5rem;
+        }
+
+        .theme-toggle-btn {
+            color: var(--text-color) !important;
         }
     }
 
-    .logo-main {
-        color: white !important;
+    .navbar.text-light .logo-main,
+    .navbar.text-dark .logo-main {
+        // En movil no hay un cambio de color "scrolled" como en escritorio puesto que tiene fondo completo al abrir
+        transition: color 0.3s ease;
     }
 }

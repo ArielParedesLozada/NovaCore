@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { ScrollService } from '../../shared/services/scroll.service';
@@ -16,7 +16,8 @@ interface Technology {
   standalone: true,
   imports: [CommonModule, ButtonComponent],
   templateUrl: './hero.component.html',
-  styleUrl: './hero.component.scss'
+  styleUrl: './hero.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroComponent implements OnInit {
   technologies: Technology[] = [];
@@ -36,7 +37,7 @@ export class HeroComponent implements OnInit {
     { icon: 'fab fa-java', name: 'Java' }
   ];
 
-  constructor(private scrollService: ScrollService) {}
+  constructor(private scrollService: ScrollService) { }
 
   ngOnInit(): void {
     this.generateRandomTechnologies();
@@ -45,7 +46,7 @@ export class HeroComponent implements OnInit {
   private generateRandomTechnologies(): void {
     // Barajar el array
     const shuffled = this.shuffle([...this.techList]);
-    
+
     // Generar posiciones aleatorias para cada tecnología
     this.technologies = shuffled.map((tech, index) => ({
       ...tech,
