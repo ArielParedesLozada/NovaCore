@@ -72,6 +72,18 @@
   color: #0f172a !important;
 }
 
+/* Modo claro: tags de "Más publicaciones" con el mismo recuadro/borde que la card reciente */
+:host-context(body.light-theme) .blog-tags .tag-item {
+  border: 1px solid rgba(15, 23, 42, 0.18) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: var(--text-color) !important;
+}
+
+:host-context(body.light-theme) .blog-tags .tag-item:hover {
+  border-color: rgba(77, 53, 255, 0.4) !important;
+  background: rgba(77, 53, 255, 0.12) !important;
+}
+
 // —— Última publicación destacada (horizontal, tamaño contenido) ——
 // G) Animación sutil al entrar (sin librerías)
 .blog-featured-wrap,
@@ -342,15 +354,22 @@
   }
 }
 
-/* ✅ Featured: controlar altura y eliminar "aire" */
+/* 1) Featured con altura flexible (min/max): no height fija, que crezca si el título es largo */
 .blog-featured {
-  min-height: unset !important;
-  height: 260px;
+  min-height: 240px;
+  height: auto;
+  align-items: stretch;
 }
 
-/* Imagen ocupa toda la altura del featured */
+@media (min-width: 769px) {
+  .blog-featured {
+    max-height: 360px;
+  }
+}
+
+/* 2) La imagen debe estirarse con el contenedor */
 .blog-featured-image {
-  height: 100%;
+  height: auto;
 }
 
 .blog-featured-img {
@@ -359,22 +378,21 @@
   object-position: center;
 }
 
-/* El contenido usa toda la altura y distribuye */
+/* 3) El contenido se distribuye sin pisarse */
 .blog-featured-content {
-  height: 100%;
   padding: 1.4rem 1.6rem;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.65rem;
 }
 
-/* Opcional: compactar un poco y evitar sensación de vacío */
-.blog-featured-description {
-  -webkit-line-clamp: 2;
+/* 4) CTA al fondo sin romper el layout */
+.blog-featured-cta {
+  margin-top: auto;
 }
 
-/* CTA siempre al fondo */
-.blog-featured-cta {
-  margin-top: 0 !important;
+/* Compactar descripción (menos líneas = más balance visual) */
+.blog-featured-description {
+  -webkit-line-clamp: 2;
 }
 
 .blog-grid-title {
