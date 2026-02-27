@@ -50,6 +50,17 @@ export class HeaderComponent {
         this.isMenuOpen.set(false);
     }
 
+    navigateToProjects(): void {
+        if (this.router.url === '/proyectos') {
+            // Si ya estamos en proyectos, hacer scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            // Navegar a la página de proyectos
+            this.router.navigate(['/proyectos']);
+        }
+        this.isMenuOpen.set(false);
+    }
+
     closeMenu(): void {
         this.isMenuOpen.set(false);
     }
