@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section class="page-section-dark">
+<section class="page-section-dark crear-publicacion-section">
   <div class="section-container">
     <div class="section-header">
       <h1 class="section-title">
@@ -144,9 +144,13 @@
         <input id="deleteApiKey" type="password" [(ngModel)]="deleteApiKey" name="deleteApiKey" placeholder="Pega aquí tu API Key" autocomplete="off" />
       </div>
       <div class="form-actions form-actions--row form-actions--delete">
-        <button type="button" class="btn-cancel" (click)="closeDeleteModal()">Cancelar</button>
-        <button type="button" class="btn-submit btn-submit--danger" (click)="submitDelete()">
-          <i class="fas fa-trash-alt"></i> Eliminar
+        <button type="button" class="btn-cancel" (click)="closeDeleteModal()" [disabled]="deleteLoading">Cancelar</button>
+        <button type="button" class="btn-submit btn-submit--danger" (click)="submitDelete()" [disabled]="deleteLoading">
+          @if (deleteLoading) {
+            <i class="fas fa-spinner fa-spin"></i> Eliminando...
+          } @else {
+            <i class="fas fa-trash-alt"></i> Eliminar
+          }
         </button>
       </div>
     </div>

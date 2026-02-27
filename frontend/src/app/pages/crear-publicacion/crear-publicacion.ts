@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -37,9 +37,13 @@ export class CrearPublicacion implements OnInit {
   imageFile: File | null = null;
   imagePreview: string | null = null;
   loading = false;
+  deleteLoading = false;
   message = { type: '' as 'success' | 'error' | '', text: '' };
 
-  constructor(private blogService: BlogHttpService) {}
+  constructor(
+    private blogService: BlogHttpService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loadBlogs();
@@ -90,13 +94,8 @@ export class CrearPublicacion implements OnInit {
   }
 
   confirmDelete(blog: Blog): void {
-    if (this.apiKey?.trim()) {
-      if (!confirm(`¿Eliminar la publicación «${blog.title}»?`)) return;
-      this.doDelete(blog.id, this.apiKey.trim());
-      return;
-    }
     this.blogToDelete = blog;
-    this.deleteApiKey = '';
+    this.deleteApiKey = this.apiKey?.trim() || '';
     this.deleteMessage = '';
     this.deleteModalOpen = true;
   }
@@ -106,17 +105,25 @@ export class CrearPublicacion implements OnInit {
     this.blogToDelete = null;
     this.deleteApiKey = '';
     this.deleteMessage = '';
+    this.deleteLoading = false;
   }
 
   doDelete(id: number, key: string): void {
+    this.deleteLoading = true;
+    this.deleteMessage = '';
+    this.cdr.detectChanges();
     this.blogService.deleteBlog(id, key).subscribe({
       next: () => {
+        this.deleteLoading = false;
         this.apiKey = key;
         this.closeDeleteModal();
         this.loadBlogs();
+        this.cdr.detectChanges();
       },
       error: (err: { error?: { message?: string }; message?: string }) => {
+        this.deleteLoading = false;
         this.deleteMessage = err?.error?.message || err?.message || 'Error al eliminar la publicación.';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -167,40 +174,50 @@ export class CrearPublicacion implements OnInit {
 
   async submit(): Promise<void> {
     this.message = { type: '', text: '' };
+    this.loading = true;
+    this.cdr.detectChanges();
 
     const authors = this.toArray(this.authorsInput);
     const urls = this.toArray(this.urlsInput);
 
     if (!this.title.trim()) {
+      this.loading = false;
       this.message = { type: 'error', text: 'El título es obligatorio (máx. 100 caracteres).' };
       return;
     }
     if (this.title.trim().length > 100) {
+      this.loading = false;
       this.message = { type: 'error', text: 'El título no puede superar 100 caracteres.' };
       return;
     }
     if (!this.description.trim()) {
+      this.loading = false;
       this.message = { type: 'error', text: 'La descripción es obligatoria (máx. 255 caracteres).' };
       return;
     }
     if (this.description.trim().length > 255) {
+      this.loading = false;
       this.message = { type: 'error', text: 'La descripción no puede superar 255 caracteres.' };
       return;
     }
     if (authors.length === 0) {
+      this.loading = false;
       this.message = { type: 'error', text: 'Debe haber al menos un autor.' };
       return;
     }
     if (urls.length === 0) {
+      this.loading = false;
       this.message = { type: 'error', text: 'Debe haber al menos un enlace.' };
       return;
     }
     const isEditing = this.editingId != null;
     if (!isEditing && !this.imageFile) {
+      this.loading = false;
       this.message = { type: 'error', text: 'La imagen es obligatoria.' };
       return;
     }
     if (!this.apiKey?.trim()) {
+      this.loading = false;
       this.message = { type: 'error', text: 'La API Key es obligatoria para publicar.' };
       return;
     }
@@ -224,7 +241,6 @@ export class CrearPublicacion implements OnInit {
       ...(imageBase64 ? { imageBase64 } : {}),
     };
 
-    this.loading = true;
     const apiKey = this.apiKey?.trim() || undefined;
 
     if (this.editingId != null) {
@@ -233,12 +249,14 @@ export class CrearPublicacion implements OnInit {
           this.loading = false;
           this.message = { type: 'success', text: 'Publicación actualizada correctamente.' };
           this.loadBlogs();
+          this.cdr.detectChanges();
           setTimeout(() => this.closeModal(), 1200);
         },
         error: (err: { error?: { message?: string }; message?: string }) => {
           this.loading = false;
           const msg = err?.error?.message || err?.message || 'Error al actualizar la publicación.';
           this.message = { type: 'error', text: msg };
+          this.cdr.detectChanges();
         },
       });
     } else {
@@ -247,12 +265,14 @@ export class CrearPublicacion implements OnInit {
           this.loading = false;
           this.message = { type: 'success', text: 'Publicación creada correctamente.' };
           this.loadBlogs();
+          this.cdr.detectChanges();
           setTimeout(() => this.closeModal(), 1200);
         },
         error: (err: { error?: { message?: string }; message?: string }) => {
           this.loading = false;
           const msg = err?.error?.message || err?.message || 'Error al crear la publicación.';
           this.message = { type: 'error', text: msg };
+          this.cdr.detectChanges();
         },
       });
     }
