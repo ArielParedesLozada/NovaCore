@@ -13,7 +13,7 @@
       </p>
     </div>
 
-    <div class="services-grid">
+    <div class="services-grid page-content-reveal">
       @for (service of services; track service.id; let i = $index) {
       <div class="service-card-wrapper" (click)="openModal(service)">
         <app-card [imageUrl]="service.imageUrl" [imageAlt]="service.imageAlt" [title]="service.title"

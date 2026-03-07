@@ -55,6 +55,29 @@ body.light-theme
   --text-muted-3: rgba(15, 23, 42, 0.5)
 
 
+// Aparición suave solo del contenido debajo de los títulos (no títulos ni header nav)
+// Añadir clase page-content-reveal al wrapper que envuelve el contenido bajo el título de cada sección
+.page-content-reveal
+  animation: page-reveal 0.5s ease-out
+
+@keyframes page-reveal
+  0%
+    opacity: 0
+    transform: translateY(28px)
+  100%
+    opacity: 1
+    transform: translateY(0)
+
+// —— Scroll reveal: secciones que aparecen al hacer scroll (página de inicio) ——
+.scroll-reveal
+  opacity: 0
+  transform: translateY(32px)
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out
+
+  &.scroll-reveal-visible
+    opacity: 1
+    transform: translateY(0)
+
 html, body
   margin: 0
   padding: 0
