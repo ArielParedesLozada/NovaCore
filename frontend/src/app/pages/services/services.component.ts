@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
-import { WhatsAppButtonComponent } from '../../components/whatsapp-button/whatsapp-button.component';
+import { FooterComponent } from '../../components/footer/footer.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ServiceModalComponent } from '../../components/service-modal/service-modal.component';
 
@@ -18,7 +18,7 @@ interface ServiceItem {
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, WhatsAppButtonComponent, CardComponent, ServiceModalComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, CardComponent, ServiceModalComponent],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })

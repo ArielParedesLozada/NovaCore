@@ -14,7 +14,7 @@
     <a (click)="navigateToServices(); $event.preventDefault()">Servicios</a>
     <a (click)="navigateToProjects(); $event.preventDefault()">Proyectos</a>
     <a routerLink="/blog" (click)="closeMenu()">Blog</a>
-    <a (click)="scrollToSection('contacto'); $event.preventDefault()">Contacto</a>
+    <a (click)="navigateToContact(); $event.preventDefault()">Contacto</a>
 
     <button class="theme-toggle-btn" (click)="toggleTheme()" aria-label="Toggle theme">
       <i class="fas" [ngClass]="themeService.isDarkMode() ? 'fa-sun' : 'fa-moon'"></i>
