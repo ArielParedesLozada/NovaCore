@@ -126,6 +126,8 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
+  padding-top: 0.75rem;
+  margin-bottom: 0.5rem;
   gap: 1rem;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
@@ -141,6 +143,10 @@
       color: var(--primary);
     }
   }
+
+  .blog-date {
+    white-space: nowrap;
+  }
 }
 
 // Mismo diseño que Servicios y Proyectos
@@ -153,7 +159,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
 
   &:hover {
     color: var(--purple-bright);

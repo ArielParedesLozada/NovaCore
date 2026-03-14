@@ -20,7 +20,11 @@
             @if (blog.authors && blog.authors.length) {
             <span class="blog-author">
               <i class="fas fa-user"></i>
-              {{ blog.authors[0] }}
+              @if (blog.authors.length === 1) {
+                {{ blog.authors[0] }}
+              } @else {
+                {{ blog.authors[0] }} y {{ blog.authors.length - 1 }} más
+              }
             </span>
             }
             <span class="blog-date">
