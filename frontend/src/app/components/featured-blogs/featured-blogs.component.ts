@@ -32,9 +32,19 @@ export class FeaturedBlogsComponent implements OnInit {
     });
   }
 
+  /** Quita etiquetas HTML y entidades para mostrar solo texto en la vista previa. */
+  stripHtml(html: string): string {
+    if (!html) return '';
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const text = div.textContent ?? div.innerText ?? '';
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
   truncateDescription(text: string, maxLen: number): string {
     if (!text) return '';
-    return text.length <= maxLen ? text : text.slice(0, maxLen).trim() + '…';
+    const plain = this.stripHtml(text);
+    return plain.length <= maxLen ? plain : plain.slice(0, maxLen).trim() + '…';
   }
 
   formatDate(value: Date | string): string {
