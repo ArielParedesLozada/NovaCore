@@ -19,8 +19,11 @@ export class BasicBlogList implements OnInit {
   ngOnInit(): void {
     this.blogService.getBlogs().subscribe({
       next: (data) => {
-        this.blogs = data;
-        console.log(data);
+        this.blogs = [...data].sort((a, b) => {
+          const da = new Date(a.createdAt).getTime();
+          const db = new Date(b.createdAt).getTime();
+          return db - da;
+        });
       },
       error: (err) => {
         console.error('Error cargando blogs', err);

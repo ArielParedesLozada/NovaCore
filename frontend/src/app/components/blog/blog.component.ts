@@ -33,10 +33,16 @@ export class BlogComponent implements OnInit {
 
     this.blogService.getBlogs().subscribe({
       next: (data) => {
-        this.blogs.set(data);
-        // La API ya devuelve ordenado por createdAt desc; el primero es el más reciente
-        this.featuredBlog.set(data.length > 0 ? data[0] : null);
-        this.restBlogs.set(data.length > 1 ? data.slice(1) : []);
+        // Ordenar siempre por fecha descendente (más reciente primero) para que el orden
+        // sea correcto en todos los entornos (local, Vercel, etc.), independiente del API.
+        const sorted = [...data].sort((a, b) => {
+          const da = new Date(a.createdAt).getTime();
+          const db = new Date(b.createdAt).getTime();
+          return db - da;
+        });
+        this.blogs.set(sorted);
+        this.featuredBlog.set(sorted.length > 0 ? sorted[0] : null);
+        this.restBlogs.set(sorted.length > 1 ? sorted.slice(1) : []);
 
         this.loading.set(false);
       },
