@@ -6,7 +6,9 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { BlogHttpService } from '../../services/blog-http-service';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { InputModalComponent } from '../../components/input-modal/input-modal.component';
 import { Blog } from '../../interfaces/blog';
+import { fixYoutubeShortsIframesInHtml } from '../../utils/youtube-embed-url';
 
 @Component({
   selector: 'app-formulario-entrada',
@@ -18,6 +20,7 @@ import { Blog } from '../../interfaces/blog';
     QuillEditorComponent,
     HeaderComponent,
     FooterComponent,
+    InputModalComponent,
   ],
   templateUrl: './formulario-entrada.html',
   styleUrl: './formulario-entrada.sass',
@@ -43,6 +46,11 @@ export class FormularioEntrada implements OnInit, OnDestroy {
   private tableInsertCallback: ((rows: number, cols: number) => void) | null = null;
   private tableRequestListener = (e: Event) => this.onTableRequest(e as CustomEvent);
 
+  /** Modal de URL de video (Quill toolbar): mismo patrón que la tabla vía CustomEvent */
+  showVideoModal = false;
+  private videoInsertCallback: ((url: string) => void) | null = null;
+  private videoRequestListener = (e: Event) => this.onVideoUrlRequest(e as CustomEvent);
+
   constructor(
     private blogService: BlogHttpService,
     private router: Router,
@@ -60,6 +68,7 @@ export class FormularioEntrada implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     window.addEventListener('nova-core-request-table', this.tableRequestListener);
+    window.addEventListener('nova-core-request-video-url', this.videoRequestListener);
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const numId = parseInt(id, 10);
@@ -91,6 +100,29 @@ export class FormularioEntrada implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.removeEventListener('nova-core-request-table', this.tableRequestListener);
+    window.removeEventListener('nova-core-request-video-url', this.videoRequestListener);
+  }
+
+  private onVideoUrlRequest(e: CustomEvent): void {
+    const insert = e.detail?.insert as ((url: string) => void) | undefined;
+    if (typeof insert !== 'function') return;
+    this.videoInsertCallback = insert;
+    this.showVideoModal = true;
+    this.cdr.detectChanges();
+  }
+
+  confirmVideoModal(url: string): void {
+    const cb = this.videoInsertCallback;
+    this.videoInsertCallback = null;
+    this.showVideoModal = false;
+    this.cdr.detectChanges();
+    if (cb && url.trim()) cb(url.trim());
+  }
+
+  cancelVideoModal(): void {
+    this.videoInsertCallback = null;
+    this.showVideoModal = false;
+    this.cdr.detectChanges();
   }
 
   private onTableRequest(e: CustomEvent): void {
@@ -195,7 +227,7 @@ export class FormularioEntrada implements OnInit, OnDestroy {
 
     const body = {
       title: this.title.trim(),
-      description: this.description.trim(),
+      description: fixYoutubeShortsIframesInHtml(this.description.trim()),
       authors,
       tags: this.toArray(this.tagsInput),
       urls,
