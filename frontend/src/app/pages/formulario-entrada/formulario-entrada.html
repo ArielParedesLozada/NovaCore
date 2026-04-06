@@ -137,6 +137,20 @@
       </div>
     </div>
   }
+
+  @if (showVideoModal) {
+    <app-input-modal
+      title="Insertar video"
+      subtitle="YouTube (incl. Shorts), youtu.be o Vimeo."
+      label="URL del video"
+      placeholder="https://www.youtube.com/watch?v=… o /shorts/…"
+      confirmLabel="Insertar video"
+      cancelLabel="Cancelar"
+      iconClass="fas fa-video"
+      (confirm)="confirmVideoModal($event)"
+      (cancel)="cancelVideoModal()"
+    />
+  }
 </section>
 
 <app-footer></app-footer>

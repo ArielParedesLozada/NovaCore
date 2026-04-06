@@ -2,8 +2,11 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideQuillConfig, defaultModules } from 'ngx-quill/config';
+import Quill from 'quill';
+import type Toolbar from 'quill/modules/toolbar';
 
 import { routes } from './app.routes';
+import { normalizeVideoEmbedUrl } from './utils/youtube-embed-url';
 
 /** Barra de herramientas completa: texto, listas, tablas, enlaces, imagen, video, etc. */
 const fullToolbar = [
@@ -43,6 +46,21 @@ function tableHandler(this: { quill: { getModule: (name: string) => unknown; get
   window.dispatchEvent(new CustomEvent('nova-core-request-table', { detail: { insert } }));
 }
 
+function videoHandler(this: Toolbar, _value: unknown): void {
+  const quill = this.quill;
+  const insert = (rawUrl: string) => {
+    const trimmed = rawUrl?.trim();
+    if (!trimmed) return;
+    const value = normalizeVideoEmbedUrl(trimmed);
+    quill.focus();
+    const range = quill.getSelection(true);
+    const index = range ? range.index + range.length : Math.max(0, quill.getLength() - 1);
+    quill.insertEmbed(index, 'video', value, Quill.sources.USER);
+    quill.setSelection(index + 2, 0, Quill.sources.USER);
+  };
+  window.dispatchEvent(new CustomEvent('nova-core-request-video-url', { detail: { insert } }));
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -56,7 +74,7 @@ export const appConfig: ApplicationConfig = {
         ...defaultModules,
         toolbar: {
           container: fullToolbar,
-          handlers: { table: tableHandler },
+          handlers: { table: tableHandler, video: videoHandler },
         },
         table: true,
       },

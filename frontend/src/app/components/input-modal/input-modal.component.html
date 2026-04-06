@@ -1,0 +1,50 @@
+<div class="nc-modal-overlay" (click)="onOverlayClick()">
+  <div
+    class="nc-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'nc-input-modal-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="nc-modal-header">
+      <span class="nc-modal-icon" aria-hidden="true">
+        <i [class]="iconClass"></i>
+      </span>
+      <h2 id="nc-input-modal-title" class="nc-modal-title">{{ title }}</h2>
+      @if (subtitle) {
+        <p class="nc-modal-subtitle">{{ subtitle }}</p>
+      }
+      <button type="button" class="nc-modal-close" (click)="onCancel()" aria-label="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="nc-modal-body">
+      <div class="nc-modal-field">
+        <label [attr.for]="'nc-input-modal-field'">{{ label }}</label>
+        <input
+          #fieldInput
+          id="nc-input-modal-field"
+          type="text"
+          name="ncInputModalField"
+          [(ngModel)]="value"
+          [placeholder]="placeholder"
+          (keydown)="onKeydown($event)"
+          autocomplete="off"
+        />
+      </div>
+      <div class="nc-modal-actions">
+        <button type="button" class="nc-modal-btn nc-modal-btn--cancel" (click)="onCancel()">
+          {{ cancelLabel }}
+        </button>
+        <button
+          type="button"
+          class="nc-modal-btn nc-modal-btn--confirm"
+          [disabled]="!canSubmit"
+          (click)="onConfirm()"
+        >
+          {{ confirmLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
