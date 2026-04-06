@@ -7,7 +7,10 @@ import { BlogHttpService } from '../../services/blog-http-service';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { Blog } from '../../interfaces/blog';
-import { fixYoutubeShortsIframesInHtml } from '../../utils/youtube-embed-url';
+import {
+  fixYoutubeShortsIframesInHtml,
+  upgradeVideoLinksToEmbedsInHtml,
+} from '../../utils/youtube-embed-url';
 
 @Component({
   selector: 'app-blog-detail-page',
@@ -53,7 +56,8 @@ export class BlogDetailPage implements OnInit {
 
   sanitizeDescription(html: string): SafeHtml {
     const fixed = fixYoutubeShortsIframesInHtml(html || '');
-    const processed = this.nonBreakingHyphens(fixed);
+    const withEmbeds = upgradeVideoLinksToEmbedsInHtml(fixed);
+    const processed = this.nonBreakingHyphens(withEmbeds);
     return this.sanitizer.bypassSecurityTrustHtml(processed);
   }
 
